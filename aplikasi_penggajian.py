@@ -140,7 +140,7 @@ def pilihanMenu():
     print("5. Mencetak Slip Gaji Karyawan")
     print("6. Exit")
     print("------------------------------")
-
+#yes
 def inputDataKaryawan():
     print("Menu Input Data")
     print("------------------------------")
