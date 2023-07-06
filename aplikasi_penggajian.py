@@ -1,5 +1,6 @@
 import os
 
+# Penampungan data karyawan akan memakai list, dimana setiap karyawan mempunyai index tertentu mulai dari 0
 namaKaryawan = []
 idKaryawan = []
 jenisKelaminKaryawan = []
@@ -14,18 +15,7 @@ jabatanKaryawan = []
 tipeKaryawan = []
 jamLemburKaryawan = []
 
-'''
-gajiJabatan = []
-tunjanganStatus = []
-tunjanganAnak = []
-gajiLembur = []
-bonusGaji = []
-gajiKotor = []
-potonganPajak = []
-gajiSetelahPajak = []
-bpjs = []
-gajiBersih = []
-'''
+# Fungsi ini mengambil data (angka, huruf, blank), lalu mengembalikan jabatan sesuai data yang dimasukkan
 def penentuJabatan(jab):
     if jab == 1:
         return "Direktur"
@@ -39,7 +29,8 @@ def penentuJabatan(jab):
         return "Karyawan"
     else:
         return "Invalid"
-    
+
+# Fungsi ini mengambil data (angka, huruf, blank), lalu mengembalikan gaji sesuai data yang dimasukkan
 def penentugajiJabatan(jab):
     if jab == "Direktur":
         return 20000000
@@ -54,9 +45,7 @@ def penentugajiJabatan(jab):
     else:
         return 0
 
-
-
-    
+# Fungsi ini menampilkan seluruh karyawan yang diinput, tidak ada pengecualian
 def tampilSeluruhKaryawan():
     os.system('cls')
     print("Menampilkan Seluruh Karyawan")
@@ -94,6 +83,7 @@ def tampilSeluruhKaryawan():
     print("""
 -----------------------------------------------------------------------------------------------------------------------------------------------""")
 
+# Fungsi ini mengambil data berupa jabatan, tahun, atau ID, lalu mengembalikan tabel sesuai dengan salah satu variabel tersebut
 def printTabel(jab = 0, pilihanTahun = 0, pilihanID = 0):
     print("""
 -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -130,6 +120,7 @@ def printTabel(jab = 0, pilihanTahun = 0, pilihanID = 0):
     print("""
 -----------------------------------------------------------------------------------------------------------------------------------------------""")
 
+# Fungsi ini menampilkan pilihan menu utama
 def pilihanMenu():
     print("------------------------------")
     print("Menu: ")
@@ -140,7 +131,8 @@ def pilihanMenu():
     print("5. Mencetak Slip Gaji Karyawan")
     print("6. Exit")
     print("------------------------------")
-#yes
+
+# Fungsi ini mengambil data-data karyawan
 def inputDataKaryawan():
     print("Menu Input Data")
     print("------------------------------")
@@ -162,13 +154,14 @@ def inputDataKaryawan():
             print("Pilihan anda salah, mohon masukkan pilihan angka (1-5) yang benar")
 
         else:
-            tipeKaryawan.append(input("Masukkan Tipe (Tetap/Kontrak): "))
+            tipeKaryawan.append(input("Masukkan Tipe (1. Tetap/2. Kontrak): "))
             jamLemburKaryawan.append(input("Masukkan Jam Lembur: "))
             print("------------------------------")
             input("Masukkan Enter untuk kembali ke menu")
             os.system('cls')
             break
 
+# Fungsi ini menampilkan menu tampilan data karyawan, dan mengambil data (huruf, angka, blank) lalu mengembalikan validasi atau tabel
 def tampilkanDataKaryawan():
     while True:
         print("Menu Tampilan Data Karyawan:")
@@ -180,77 +173,90 @@ def tampilkanDataKaryawan():
         print("5. Tampilkan HRD")
         print("6. Tampilkan Karyawan")
         print("------------------------------")
-        pilihanTampilan = int(input("Masukkan pilihan Anda: "))
-        if pilihanTampilan == 1:
-            tampilSeluruhKaryawan()
-            break
-
-        elif pilihanTampilan == 2:
-            os.system('cls')
-            print("Menampilkan Direktur")
-            printTabel(1)
-            break
+        try:
+            pilihanTampilan = int(input("Masukkan pilihan Anda: "))
         
-        elif pilihanTampilan == 3:
-            os.system('cls')
-            print("Menampilkan Manajer")
-            printTabel(2)
-            break
-        
-        elif pilihanTampilan == 4:
-            os.system('cls')
-            print("Menampilkan Supervisor")
-            printTabel(3)
-            break
-
-        elif pilihanTampilan == 5:
-            os.system('cls')
-            print("Menampilkan HRD")
-            printTabel(4)
-            break
-
-        elif pilihanTampilan == 6:
-            os.system('cls')
-            print("Menampilkan Karyawan")
-            printTabel(5)
-            break
-
-        else:
+        except ValueError:
             print("Pilihan anda salah, mohon masukkan angka (1-6)")
+        
+        else:
+            if pilihanTampilan == 1:
+                tampilSeluruhKaryawan()
+                break
 
+            elif pilihanTampilan == 2:
+                os.system('cls')
+                print("Menampilkan Direktur")
+                printTabel(1)
+                break
+            
+            elif pilihanTampilan == 3:
+                os.system('cls')
+                print("Menampilkan Manajer")
+                printTabel(2)
+                break
+            
+            elif pilihanTampilan == 4:
+                os.system('cls')
+                print("Menampilkan Supervisor")
+                printTabel(3)
+                break
 
+            elif pilihanTampilan == 5:
+                os.system('cls')
+                print("Menampilkan HRD")
+                printTabel(4)
+                break
+
+            elif pilihanTampilan == 6:
+                os.system('cls')
+                print("Menampilkan Karyawan")
+                printTabel(5)
+                break
+
+            else:
+                print("Pilihan anda salah, mohon masukkan angka (1-6)")
+
+# Fungsi ini untuk edit data karyawan
 def editDataKaryawan():
     tampilSeluruhKaryawan()
     print('\n')
-    nomorEdit = int(input("Masukkan nomor yang ingin diedit: ")) - 1
-    os.system('cls')
-    print("Mengedit data karyawan nomor " +  str(nomorEdit))
-    print("------------------------------")
-    namaKaryawan[nomorEdit] = input("Masukkan nama baru: ")
-    idKaryawan[nomorEdit] = input("Masukkan id baru: ")
-    jenisKelaminKaryawan[nomorEdit] = input("Masukkan jenis kelamin baru: ")
-    umurKaryawan[nomorEdit] = input("Masukkan umur baru: ")
-    tempatLahirKaryawan[nomorEdit] = input("Masukkan tempat lahir baru: ")
-    tanggalLahirKaryawan[nomorEdit] = input("Masukkan tanggal lahir baru: ")
-    bulanLahirKaryawan[nomorEdit] = input("Masukkan bulan lahir baru (01-12): ")
-    tahunLahirKaryawan[nomorEdit] = input("Masukkan tahun lahir baru: ")
-    statusKaryawan[nomorEdit] = input("Masukkan status baru (Menikah/Belum): ")
-    jumlahAnakKaryawan[nomorEdit] = input("Masukkan jumlah anak baru: ")
+    
     while True:
-        try:
-            jabatanKaryawan[nomorEdit] = int(input("Masukkan jabatan baru (1. Direktur, 2. Manajer, 3. Supervisor, 4. HRD, 5. Karyawan): "))
+        try: nomorEdit = int(input("Masukkan nomor yang ingin diedit: ")) - 1
             
         except ValueError:
             print("Pilihan anda salah, mohon masukkan pilihan angka (1-5) yang benar")
-
+        
         else:
-            tipeKaryawan[nomorEdit] = input("Masukkan tipe baru: ")
-            jamLemburKaryawan[nomorEdit] = input("Masukkan jam lembur baru: ")
+            os.system('cls')
+            print("Mengedit data karyawan nomor " +  str(nomorEdit + 1))
             print("------------------------------")
+            namaKaryawan[nomorEdit] = input("Masukkan nama baru: ")
+            idKaryawan[nomorEdit] = input("Masukkan id baru: ")
+            jenisKelaminKaryawan[nomorEdit] = input("Masukkan jenis kelamin baru: ")
+            umurKaryawan[nomorEdit] = input("Masukkan umur baru: ")
+            tempatLahirKaryawan[nomorEdit] = input("Masukkan tempat lahir baru: ")
+            tanggalLahirKaryawan[nomorEdit] = input("Masukkan tanggal lahir baru: ")
+            bulanLahirKaryawan[nomorEdit] = input("Masukkan bulan lahir baru (01-12): ")
+            tahunLahirKaryawan[nomorEdit] = input("Masukkan tahun lahir baru: ")
+            statusKaryawan[nomorEdit] = input("Masukkan status baru (Menikah/Belum): ")
+            jumlahAnakKaryawan[nomorEdit] = input("Masukkan jumlah anak baru: ")
             break
+            while True:
+                try:
+                    jabatanKaryawan[nomorEdit] = int(input("Masukkan jabatan baru (1. Direktur, 2. Manajer, 3. Supervisor, 4. HRD, 5. Karyawan): "))
+                    
+                except ValueError:
+                    print("Pilihan anda salah, mohon masukkan pilihan angka (1-5) yang benar")
 
-    #jabatanKaryawan[nomorEdit] = int(input("Masukkan jabatan baru (1. Direktur, 2. Manajer, 3. Supervisor, 4. HRD, 5. Karyawan): "))
-
+                else:
+                    tipeKaryawan[nomorEdit] = input("Masukkan tipe baru: ")
+                    jamLemburKaryawan[nomorEdit] = input("Masukkan jam lembur baru: ")
+                    print("------------------------------")
+                    break
+    
+# Fungsi ini mencari data karyawan
 def cariDataKaryawan():
     while True:
         print("Menu Cari Data Karyawan")
@@ -277,6 +283,7 @@ def cariDataKaryawan():
         else:
             print("Pilihan anda salah, mohon masukkan angka (1-2)")
 
+# Fungsi ini mengambil nama lalu mencetak slip gaji dalam bentuk txt
 def cetakSlipGaji():
     #file = "slipgaji.txt", "w")
     pilihanCetak = input("Masukkan Nama yang ingin dicetak gajinya: ")
@@ -321,7 +328,7 @@ def cetakSlipGaji():
             input("Slip gaji berhasil di cetak dengan nama slipgaji.txt, klik enter untuk kembali ke menu utama")
 
 
-
+# Looping menu dengan validasi, akan selalu ada hingga user menginput 6 untuk exit
 while True:
     pilihanMenu()
     try:
