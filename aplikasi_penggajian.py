@@ -1,9 +1,5 @@
 import os
-#Fitur yang perlu
-#ID jangan terlalu panjang
-#Bulan lahir validasi
-#Huruf kecil gede bisa untuk input2
-#Slip gaji ada tabel nya dulu Done
+
 # Penampungan data karyawan akan memakai list, dimana setiap karyawan mempunyai index tertentu mulai dari 0
 namaKaryawan = []
 idKaryawan = []
@@ -19,28 +15,37 @@ jabatanKaryawan = []
 tipeKaryawan = []
 jamLemburKaryawan = []
 gajiJabatan = []
+angkaKaryawan = []
 
 # Fungsi ini mengambil data (angka, huruf, blank), lalu mengembalikan jabatan sesuai data yang dimasukkan
 def penentuJabatan(jab):
     if jab == 1:
-        jabatanKaryawan.append("Direktur")
-        gajiJabatan.append(20000000)
+        return "Direktur"
     elif jab == 2:
-        jabatanKaryawan.append("Manajer")
-        gajiJabatan.append(15000000)
+        return "Manajer"
     elif jab == 3:
-        jabatanKaryawan.append("Direktur")
-        gajiJabatan.append(12000000)
+        return "Supervisor"
     elif jab == 4:
-        jabatanKaryawan.append("Direktur")
-        gajiJabatan.append(10000000)
+        return "HRD"
     elif jab == 5:
-        jabatanKaryawan.append("Direktur")
-        gajiJabatan.append(5000000)
+        return "Karyawan"
     else:
-        jabatanKaryawan.append("Invalid")
-        gajiJabatan.append(0)
+        return "Invalid"
 
+
+def penentuGajiJabatan(jab):
+    if jab == 1:
+        return 20000000
+    elif jab == 2:
+        return 15000000
+    elif jab == 3:
+        return 12000000
+    elif jab == 4:
+        return 10000000
+    elif jab == 5:
+        return 5000000
+    else:
+        return 0
 
 def penentuStatus(pilihan):
     if pilihan == 1:
@@ -68,7 +73,8 @@ def printTabelTest(i):
     kolomTahun = str(tahunLahirKaryawan[i])
     kolomStatus = str(penentuStatus(statusKaryawan[i]))
     kolomjumlahAnak = str(jumlahAnakKaryawan[i])
-    kolomtipeKaryawan = str(tipeKaryawan[i])
+    kolomjabatanKaryawan = penentuJabatan(jabatanKaryawan[i])
+    kolomtipeKaryawan = str(penentuTipe(tipeKaryawan[i]))
     kolomjamLemburKaryawan = str(jamLemburKaryawan[i])
     print('| ' + kolomNo + (2-len(kolomNo))*' '
         + ' | ' + kolomNama + (9-len(kolomNama))*' '
@@ -79,7 +85,7 @@ def printTabelTest(i):
         + ' | ' + kolomTanggal + "/" + kolomBulan + "/" + kolomTahun + (15-len(kolomTanggal + kolomBulan + kolomTahun))*' '
         + ' | ' + kolomStatus + (8-len(kolomStatus))*' '
         + ' | ' + kolomjumlahAnak + (8-len(kolomjumlahAnak))*' '
-        + ' | ' + str(jabatanKaryawan[i]) + (10-len(str(jabatanKaryawan[i])))*' '
+        + ' | ' + kolomjabatanKaryawan + (10-len(kolomjabatanKaryawan))*' '
         + ' | ' + kolomtipeKaryawan + (8-len(kolomtipeKaryawan))*' '
         + ' | ' + kolomjamLemburKaryawan + (10-len(kolomjamLemburKaryawan))*' ' + ' | ' )
 
@@ -97,13 +103,13 @@ def tampilSeluruhKaryawan():
         
 
 # Fungsi ini mengambil data berupa jabatan, tahun, atau ID, lalu mengembalikan tabel sesuai dengan salah satu variabel tersebut
-def printTabel(jab = "None", pilihanTahun = 0, pilihanID = 0):
+def printTabel(jab = 0, pilihanTahun = 0, pilihanID = 0):
     print("""
 -----------------------------------------------------------------------------------------------------------------------------------------------
 | No | Nama      | ID    | Jenis Kelamin | Umur | Tempat Lahir | Tgl/Bln/Thn Lahir | Status   | Jml Anak | Jabatan    | Tipe     | Jam Lembur |
 -----------------------------------------------------------------------------------------------------------------------------------------------""")
     for i in range(len(namaKaryawan)):
-        if str(jabatanKaryawan[i]) == jab or int(tahunLahirKaryawan[i]) == pilihanTahun or int(idKaryawan[i]) == pilihanID:
+        if int(jabatanKaryawan[i]) == jab or int(tahunLahirKaryawan[i]) == pilihanTahun or int(idKaryawan[i]) == pilihanID:
             printTabelTest(i)
     print("""
 -----------------------------------------------------------------------------------------------------------------------------------------------""")
@@ -124,19 +130,42 @@ def pilihanMenu():
 def inputDataKaryawan():
     print("Menu Input Data")
     print("------------------------------")
-    namaKaryawan.append(input("Masukkan Nama: "))
-    idKaryawan.append(input("Masukkan ID: "))
+    namaKaryawan.append(input("Masukkan Nama: "))   
+    
+    while True:
+        idInput = input("Masukkan ID (4 Digit): ")
+        if len(str(idInput)) == 4:
+            idKaryawan.append(idInput)
+            break
+        else:
+            print("ID Harus 4 digit")
+
     jenisKelaminKaryawan.append(input("Masukkan Jenis Kelamin: "))
     umurKaryawan.append(input("Masukkan Umur: "))
     tempatLahirKaryawan.append(input("Masukkan Tempat Lahir: "))
-    tanggalLahirKaryawan.append(input("Masukkan Tanggal Lahir: "))
-    bulanLahirKaryawan.append(input("Masukkan Bulan Lahir (01-12): "))
+    
+    while True:
+        tggl = input("Masukkan Tanggal Lahir (1-31): ")
+        if tggl.isdigit() and 1 <= int(tggl) <= 31:
+           tanggalLahirKaryawan.append(int(tggl))
+           break
+        else:
+            print("Input tidak valid. Mohon masukkan angka antara 1 sampai 31.")
+    
+    while True:
+        bulan = input("Masukkan Bulan Lahir (1-12): ")
+        if bulan.isdigit() and 1 <= int(bulan) <= 12:
+           bulanLahirKaryawan.append(int(bulan))
+           break
+        else:
+            print("Input tidak valid. Mohon masukkan angka antara 1 sampai 12.")
+
     tahunLahirKaryawan.append(input("Masukkan Tahun Lahir: "))
     statusKaryawan.append(int(input("Masukkan Status (1. Menikah/2. Belum): ")))
     jumlahAnakKaryawan.append(input("Masukkan Jumlah Anak: "))
     while True:
         try:
-            penentuJabatan(int(input("Masukkan Jabatan (1. Direktur, 2. Manajer, 3. Supervisor, 4. HRD, 5. Karyawan): ")))
+            jabatanKaryawan.append(int(input("Masukkan Jabatan (1. Direktur, 2. Manajer, 3. Supervisor, 4. HRD, 5. Karyawan): ")))
             
         except ValueError:
             os.system('cls')
@@ -184,73 +213,45 @@ def tampilkanDataKaryawan():
                     break
 
                 elif pilihanTampilan == 2:
-                    for i in range (len(namaKaryawan)):
-                        if jabatanKaryawan[i] == "Direktur":
-                            os.system('cls')
-                            print("Menampilkan Direktur")
-                            printTabel("Direktur")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
-                        else:
-                            print("Data Karyawan belum ada, mohon input dulu")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
+                    
+                    
+                    os.system('cls')
+                    print("Menampilkan Direktur")
+                    printTabel(1)
+                    input("Masukkan Enter untuk kembali ke menu")
+                    break
+                    
                 
                 elif pilihanTampilan == 3:
-                    for i in range (len(namaKaryawan)):
-                        if jabatanKaryawan[i] == "Manajer":
-                            os.system('cls')
-                            print("Menampilkan Manajer")
-                            printTabel("Manajer")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
-                        
-                        else:
-                            print("Data Karyawan belum ada, mohon input dulu")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
+                    os.system('cls')
+                    print("Menampilkan Manajer")
+                    printTabel(2)
+                    input("Masukkan Enter untuk kembali ke menu")
+                    break
                     
 
                 
                 elif pilihanTampilan == 4:
-                    for i in range (len(namaKaryawan)):
-                        if jabatanKaryawan[i] == "Supervisor":
-                            os.system('cls')
-                            print("Menampilkan Supervisor")
-                            printTabel("Supervisor")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
-                        else:
-                            print("Data Karyawan belum ada, mohon input dulu")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
-                    
+                    os.system('cls')
+                    print("Menampilkan Supervisor")
+                    printTabel(3)
+                    input("Masukkan Enter untuk kembali ke menu")
+                    break
 
                 elif pilihanTampilan == 5:
-                    for i in range (len(namaKaryawan)):
-                        if jabatanKaryawan[i] == "HRD":
-                            os.system('cls')
-                            print("Menampilkan HRD")
-                            printTabel("HRD")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
-                        else:
-                            print("Data Karyawan belum ada, mohon input dulu")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
+                    os.system('cls')
+                    print("Menampilkan HRD")
+                    printTabel(4)
+                    input("Masukkan Enter untuk kembali ke menu")
+                    break
 
                 elif pilihanTampilan == 6:
-                    for i in range (len(namaKaryawan)):
-                        if jabatanKaryawan[i] == "Karyawan":
-                            os.system('cls')
-                            print("Menampilkan Karyawan")
-                            printTabel("Karyawan")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
-                        else:
-                            print("Data Karyawan belum ada, mohon input dulu")
-                            input("Masukkan Enter untuk kembali ke menu")
-                            return
+                    os.system('cls')
+                    print("Menampilkan Karyawan")
+                    printTabel(5)
+                    input("Masukkan Enter untuk kembali ke menu")
+                    break
+
 
                 elif pilihanTampilan == 7:
                     os.system('cls')
@@ -290,12 +291,34 @@ def editDataKaryawan():
                     print("Mengedit data karyawan nomor " +  str(nomorEdit + 1))
                     print("------------------------------")
                     namaKaryawan[nomorEdit] = input("Masukkan Nama Baru: ")
-                    idKaryawan[nomorEdit] = input("Masukkan ID Baru: ")
+                    
+                    while True:
+                        idInput = input("Masukkan ID (4 Digit): ")
+                        if len(str(idInput)) == 4:
+                            idKaryawan[nomorEdit] = idInput
+                            break
+                        else:
+                            print("ID Harus 4 digit")
+                    
                     jenisKelaminKaryawan[nomorEdit] = input("Masukkan Jenis Kelamin Baru: ")
                     umurKaryawan[nomorEdit] = input("Masukkan Umur Baru: ")
                     tempatLahirKaryawan[nomorEdit] = input("Masukkan Tempat Lahir Baru: ")
-                    tanggalLahirKaryawan[nomorEdit] = input("Masukkan Tanggal Lahir Baru: ")
-                    bulanLahirKaryawan[nomorEdit] = input("Masukkan Bulan Lahir Baru (01-12): ")
+                    
+                    while True:
+                        tggl = input("Masukkan Tanggal Lahir (1-31): ")
+                        if tggl.isdigit() and 1 <= int(tggl) <= 31:
+                            tanggalLahirKaryawan[nomorEdit] = tggl
+                            break
+                        else:
+                            print("Input tidak valid. Mohon masukkan angka antara 1 sampai 31.")
+
+                    while True:
+                        bulan = input("Masukkan Bulan Lahir (1-12): ")
+                        if bulan.isdigit() and 1 <= int(bulan) <= 12:
+                            bulanLahirKaryawan[nomorEdit] = bulan
+                            break
+                        else:
+                            print("Input tidak valid. Mohon masukkan angka antara 1 sampai 12.")
                     tahunLahirKaryawan[nomorEdit] = input("Masukkan Tahun Lahir Baru: ")
                     statusKaryawan[nomorEdit] = int(input("Masukkan Status Baru (1. Menikah/2. Belum): "))
                     jumlahAnakKaryawan[nomorEdit] = input("Masukkan Jumlah Anak Baru: ")
@@ -348,7 +371,7 @@ def cariDataKaryawan():
                 elif pilihanCari == 2:
                     os.system('cls')
                     pilihanID = int(input("Masukkan ID karyawan yang ingin dicari: "))
-                    print("Pilihan tahun Anda: " + str(pilihanID))
+                    print("Pilihan ID Anda: " + str(pilihanID))
                     printTabel(0, 0, pilihanID)
                     print('\n')
                     input("Masukkan Enter untuk kembali ke menu")
@@ -394,15 +417,18 @@ def cetakSlipGaji():
                             for i in range(len(namaKaryawan)):
                                 if namaCetak == namaKaryawan[i]:
                                     file = open(namaKaryawan[i].lower() + "_" + "slip_gaji.txt", "w")
-                                    tunjanganStatus = 1000000 if statusKaryawan[i] == "Menikah" else 0
+                                    tunjanganStatus = 1000000 if statusKaryawan[i] == 1 else 0
                                     tunjanganAnak = int(jumlahAnakKaryawan[i]) * 500000
                                     gajiLembur = 100000 * int(jamLemburKaryawan[i])
                                     bonusGaji = 0
-                                    if tipeKaryawan[i] == "Tetap":
+                                    if tipeKaryawan[i] == 1:
                                         bonusGaji = 3000000
-                                    elif tipeKaryawan[i] == "Kontrak":
+                                    elif tipeKaryawan[i] == 2:
                                         bonusGaji = 1000000
-                                    gajiKotor = gajiJabatan[i] + tunjanganStatus + tunjanganAnak + gajiLembur + bonusGaji
+                                    else:
+                                        bonusGaji = 0
+                                    gajiJabatan = penentuGajiJabatan(jabatanKaryawan[i])
+                                    gajiKotor = gajiJabatan + tunjanganStatus + tunjanganAnak + gajiLembur + bonusGaji
                                     potonganPajak = gajiKotor * 0.1
                                     gajiSetelahPajak = gajiKotor - potonganPajak
                                     bpjs = gajiSetelahPajak * 0.25
@@ -413,10 +439,10 @@ def cetakSlipGaji():
                                     file.write("    (2022/2023)    " + '\n')
                                     file.write("Nama: ".ljust(20) + str(namaKaryawan[i]) + '\n')
                                     file.write("ID: ".ljust(20) + str(idKaryawan[i]) + '\n')
-                                    file.write("Jabatan: ".ljust(20) + str(jabatanKaryawan[i]) + '\n')
-                                    file.write("Status: ".ljust(20) + str(statusKaryawan[i]) + '\n')
+                                    file.write("Jabatan: ".ljust(20) + str(penentuJabatan(jabatanKaryawan[i])) + '\n')
+                                    file.write("Status: ".ljust(20) + str(penentuStatus(statusKaryawan[i])) + '\n')
                                     file.write("Jumlah anak: ".ljust(20) + str(jumlahAnakKaryawan[i]) + '\n')
-                                    file.write("Tipe karyawan: ".ljust(20) + str(tipeKaryawan[i]) + '\n')
+                                    file.write("Tipe karyawan: ".ljust(20) + str(penentuTipe(tipeKaryawan[i])) + '\n')
                                     file.write("----------------------------------------------------------------------------------------------------------------" + '\n')
                                     file.write("Penghasilan".ljust(50) + "Potongan" + '\n')
                                     file.write("Tunjangan Status:".ljust(20) + str(int(tunjanganStatus)).ljust(30) + "Gaji Kotor:".ljust(25) + str(int(gajiKotor)) + '\n')
@@ -429,20 +455,21 @@ def cetakSlipGaji():
                                     
                                     file.close()
                                     input("Slip gaji berhasil di cetak dengan nama slipgaji.txt, klik enter untuk kembali ke menu utama")
-                                    break
+                                    return
 
                 elif pilihanCetak == 2:
                     for i in range(len(namaKaryawan)):
                         file = open(namaKaryawan[i].lower() + "_" + "slip_gaji.txt", "w")
-                        tunjanganStatus = 1000000 if statusKaryawan[i] == "Menikah" else 0
+                        tunjanganStatus = 1000000 if statusKaryawan[i] == 1 else 0
                         tunjanganAnak = int(jumlahAnakKaryawan[i]) * 500000
                         gajiLembur = 100000 * int(jamLemburKaryawan[i])
                         bonusGaji = 0
-                        if tipeKaryawan[i] == "Tetap":
+                        if tipeKaryawan[i] == 1:
                             bonusGaji = 3000000
-                        elif tipeKaryawan[i] == "Kontrak":
+                        elif tipeKaryawan[i] == 2:
                             bonusGaji = 1000000
-                        gajiKotor = gajiJabatan[i] + tunjanganStatus + tunjanganAnak + gajiLembur + bonusGaji
+                        gajiJabatan = penentuGajiJabatan(jabatanKaryawan[i])
+                        gajiKotor = gajiJabatan + tunjanganStatus + tunjanganAnak + gajiLembur + bonusGaji
                         potonganPajak = gajiKotor * 0.1
                         gajiSetelahPajak = gajiKotor - potonganPajak
                         bpjs = gajiSetelahPajak * 0.25
@@ -453,10 +480,10 @@ def cetakSlipGaji():
                         file.write("    (2022/2023)    " + '\n')
                         file.write("Nama: ".ljust(20) + str(namaKaryawan[i]) + '\n')
                         file.write("ID: ".ljust(20) + str(idKaryawan[i]) + '\n')
-                        file.write("Jabatan: ".ljust(20) + str(jabatanKaryawan[i]) + '\n')
-                        file.write("Status: ".ljust(20) + str(statusKaryawan[i]) + '\n')
+                        file.write("Jabatan: ".ljust(20) + str(penentuJabatan(jabatanKaryawan[i])) + '\n')
+                        file.write("Status: ".ljust(20) + str(penentuStatus(statusKaryawan[i])) + '\n')
                         file.write("Jumlah anak: ".ljust(20) + str(jumlahAnakKaryawan[i]) + '\n')
-                        file.write("Tipe karyawan: ".ljust(20) + str(tipeKaryawan[i]) + '\n')
+                        file.write("Tipe karyawan: ".ljust(20) + str(penentuTipe(tipeKaryawan[i])) + '\n')
                         file.write("----------------------------------------------------------------------------------------------------------------" + '\n')
                         file.write("Penghasilan".ljust(50) + "Potongan" + '\n')
                         file.write("Tunjangan Status:".ljust(20) + str(int(tunjanganStatus)).ljust(30) + "Gaji Kotor:".ljust(25) + str(int(gajiKotor)) + '\n')
